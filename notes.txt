@@ -1,0 +1,29 @@
+Order of operations:
+
+1. create new project > standalone javascript react template
+	1(a). select add integration for empty aspnet web api project
+2. add project to solution > aspnet core web api
+	2(a). deselect "launch browser" in backend debug config
+3. select multiple startup projects in solution startup project prompt
+	3(a). backend must start before frontend
+4. select applicationUrl from backend>properties>launchSettings.json
+	4(a). replace the default with this value in frontend>src>setupProxy.js
+
+// NOTE IF YOUR PROJECT IS SETUP FOR HTTPS, YOU WILL HAVE TO BE SCRUTINIZING
+// AND MAKE SURE THAT THE URL REFERENCES REFLECT THIS (i.e. https://... vs http://...)
+
+5. enable cors in backend>Program.cs by configuring the builder thusly:
+	// CORS STUFF
+	builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+	{
+		builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+	}));
+
+	var app = builder.Build();
+
+	app.UseCors("corsapp");
+
+
+// CREATING A NEW CONTROLLER
+
+when adding a new controller, make sure you are selecting controller>add>controller>common>API
